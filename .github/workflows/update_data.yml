@@ -2,8 +2,11 @@ name: Daily Data Refresh
 
 on:
   schedule:
-    - cron: '0 22 * * 1-5'  # 6pm ET every weekday (market close + buffer)
-  workflow_dispatch:          # allows manual trigger from GitHub UI
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   refresh:
@@ -11,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
