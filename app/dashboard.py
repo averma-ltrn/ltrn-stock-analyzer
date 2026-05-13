@@ -137,20 +137,23 @@ def load_fundamentals():
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def fetch_comparison_ticker(ticker):
-    try:
-        t = yf.Ticker(ticker)
-        df = t.history(period="2y")
-        if df.empty:
-            return None, None
-        df.index = pd.to_datetime(df.index).tz_localize(None)
-        df.index.name = "date"
-        df = df[["Close", "Volume"]].copy()
-        df.columns = ["close", "volume"]
-        info = t.info
-        name = info.get("longName", ticker)
-        return df, name
-    except:
-        return None, None
+    import time
+    for attempt in range(3):
+        try:
+            t = yf.Ticker(ticker)
+            df = t.history(period="2y")
+            if not df.empty:
+                df.index = pd.to_datetime(df.index).tz_localize(None)
+                df.index.name = "date"
+                df = df[["Close", "Volume"]].copy()
+                df.columns = ["close", "volume"]
+                info = t.info
+                name = info.get("longName", ticker)
+                return df, name
+            time.sleep(1)
+        except:
+            time.sleep(2)
+    return None, None
 
 # ── Formatting helpers ────────────────────────────────────
 def fmt_millions(val):

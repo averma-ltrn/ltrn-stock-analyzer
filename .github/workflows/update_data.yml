@@ -1,0 +1,36 @@
+name: Daily Data Refresh
+
+on:
+  schedule:
+    - cron: '0 22 * * 1-5'  # 6pm ET every weekday (market close + buffer)
+  workflow_dispatch:          # allows manual trigger from GitHub UI
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Run ingestion
+        run: python ingestion/fetch_ltrn.py
+
+      - name: Run transformation
+        run: python transformation/transform_ltrn.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "auto: daily data refresh $(date +'%Y-%m-%d')"
+          git push
