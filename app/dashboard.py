@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import yfinance as yf
 import os
 
 # ── Page Config ──────────────────────────────────────────
@@ -17,20 +16,17 @@ st.set_page_config(
 # ── Corporate Styling ─────────────────────────────────────
 st.markdown("""
     <style>
-        /* Base */
         html, body, [class*="css"] {
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
         .main { background-color: #0a0c10; }
         .block-container { padding-top: 2rem; padding-bottom: 2rem; }
 
-        /* Sidebar */
         section[data-testid="stSidebar"] {
             background-color: #0f1117;
             border-right: 1px solid #1e2130;
         }
 
-        /* Header */
         h1 {
             color: #ffffff !important;
             font-size: 1.6rem !important;
@@ -42,7 +38,6 @@ st.markdown("""
             font-weight: 500 !important;
         }
 
-        /* KPI Cards */
         div[data-testid="metric-container"] {
             background-color: #0f1117;
             border: 1px solid #1e2130;
@@ -65,7 +60,6 @@ st.markdown("""
             font-size: 12px !important;
         }
 
-        /* Tabs */
         button[data-baseweb="tab"] {
             font-size: 12px !important;
             font-weight: 500 !important;
@@ -80,30 +74,8 @@ st.markdown("""
             border-bottom: 2px solid #c84b0a !important;
         }
 
-        /* Dividers */
         hr { border-color: #1e2130 !important; margin: 1.2rem 0; }
-
-        /* Dataframe */
         .stDataFrame { border: 1px solid #1e2130; border-radius: 4px; }
-
-        /* Input fields */
-        .stTextInput input {
-            background-color: #0f1117 !important;
-            border: 1px solid #1e2130 !important;
-            color: #ffffff !important;
-            border-radius: 4px;
-            font-size: 13px;
-        }
-        .stSelectbox select {
-            background-color: #0f1117 !important;
-            border: 1px solid #1e2130 !important;
-            color: #ffffff !important;
-        }
-
-        /* Warnings */
-        .stWarning { border-left: 3px solid #c84b0a; }
-
-        /* Caption */
         .stCaption { color: #4b5563 !important; font-size: 11px !important; }
     </style>
 """, unsafe_allow_html=True)
@@ -116,11 +88,11 @@ CHART_THEME = dict(
     font=dict(family="Inter, Segoe UI, sans-serif", color="#9ca3af", size=11),
 )
 
-LTRN_COLOR   = "#c84b0a"
-COMP1_COLOR  = "#3b82f6"
-COMP2_COLOR  = "#10b981"
-DOWN_COLOR   = "#ef4444"
-UP_COLOR     = "#22c55e"
+LTRN_COLOR    = "#c84b0a"
+COMP1_COLOR   = "#3b82f6"
+COMP2_COLOR   = "#10b981"
+DOWN_COLOR    = "#ef4444"
+UP_COLOR      = "#22c55e"
 NEUTRAL_COLOR = "#6b7280"
 
 # ── Data loaders ──────────────────────────────────────────
@@ -134,26 +106,6 @@ def load_indicators():
 def load_fundamentals():
     path = os.path.join("data", "raw", "ltrn_fundamentals_raw.csv")
     return pd.read_csv(path)
-
-@st.cache_data(ttl=3600, show_spinner=False)
-def fetch_comparison_ticker(ticker):
-    import time
-    for attempt in range(3):
-        try:
-            t = yf.Ticker(ticker)
-            df = t.history(period="2y")
-            if not df.empty:
-                df.index = pd.to_datetime(df.index).tz_localize(None)
-                df.index.name = "date"
-                df = df[["Close", "Volume"]].copy()
-                df.columns = ["close", "volume"]
-                info = t.info
-                name = info.get("longName", ticker)
-                return df, name
-            time.sleep(1)
-        except:
-            time.sleep(2)
-    return None, None
 
 # ── Formatting helpers ────────────────────────────────────
 def fmt_millions(val):
@@ -192,15 +144,15 @@ with st.sidebar:
     )
     st.markdown("<div style='font-size:11px;color:#6b7280;margin-bottom:12px;'>Selected period</div>", unsafe_allow_html=True)
 
-    show_ma = st.checkbox("Moving Averages (MA20 / MA50)", value=True)
-    show_bb = st.checkbox("Bollinger Bands", value=False)
+    show_ma     = st.checkbox("Moving Averages (MA20 / MA50)", value=True)
+    show_bb     = st.checkbox("Bollinger Bands", value=False)
     show_volume = st.checkbox("Volume Panel", value=True)
 
     st.markdown("---")
     st.markdown("""
         <div style='font-size:11px;color:#4b5563;line-height:1.6;'>
             Data source: Yahoo Finance<br>
-            Refreshed daily via automated pipeline<br>
+            Refreshed daily via automated pipeline
         </div>
     """, unsafe_allow_html=True)
 
@@ -222,9 +174,7 @@ df_filtered = df.tail(days).copy()
 # ── Header ────────────────────────────────────────────────
 col_title, col_date = st.columns([3, 1])
 with col_title:
-    st.markdown("""
-        <h1 style='margin-bottom:2px;'>Lantern Pharma &nbsp;·&nbsp; NASDAQ: LTRN</h1>
-    """, unsafe_allow_html=True)
+    st.markdown("<h1 style='margin-bottom:2px;'>Lantern Pharma &nbsp;·&nbsp; NASDAQ: LTRN</h1>", unsafe_allow_html=True)
 with col_date:
     st.markdown(f"""
         <div style='text-align:right;padding-top:12px;font-size:11px;color:#6b7280;letter-spacing:0.5px;'>
@@ -235,15 +185,15 @@ with col_date:
 st.markdown("---")
 
 # ── KPI Cards ─────────────────────────────────────────────
-current_price   = df["close"].iloc[-1]
-prev_price      = df["close"].iloc[-2]
+current_price    = df["close"].iloc[-1]
+prev_price       = df["close"].iloc[-2]
 price_change_pct = ((current_price - prev_price) / prev_price) * 100
-high_52w        = df["close"].tail(252).max()
-low_52w         = df["close"].tail(252).min()
-pct_from_high   = ((current_price - high_52w) / high_52w) * 100
-current_rsi     = df["rsi_14"].iloc[-1]
-max_drawdown    = df["drawdown_pct"].min()
-period_return   = df_filtered["cumulative_return"].iloc[-1] - df_filtered["cumulative_return"].iloc[0]
+high_52w         = df["close"].tail(252).max()
+low_52w          = df["close"].tail(252).min()
+pct_from_high    = ((current_price - high_52w) / high_52w) * 100
+current_rsi      = df["rsi_14"].iloc[-1]
+max_drawdown     = df["drawdown_pct"].min()
+period_return    = df_filtered["cumulative_return"].iloc[-1] - df_filtered["cumulative_return"].iloc[0]
 
 if current_rsi >= 70:
     rsi_label = "Overbought"
@@ -264,17 +214,16 @@ with c4:
 with c5:
     st.metric("Max Drawdown", f"{max_drawdown:.1f}%")
 with c6:
-    st.metric(f"Period Return", f"{period_return:+.1f}%", timeframe)
+    st.metric("Period Return", f"{period_return:+.1f}%", timeframe)
 
 st.markdown("---")
 
 # ── Tabs ──────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4 = st.tabs([
     "Price & Volume",
     "Technical Indicators",
     "Volatility & Drawdown",
     "Fundamentals",
-    "Comparisons"
 ])
 
 # ════════════════════════════════════════════════════════════
@@ -346,7 +295,6 @@ with tab1:
     fig.update_xaxes(gridcolor="#1a1d27", showgrid=True)
     st.plotly_chart(fig, use_container_width=True)
 
-    # Volume spike table
     spikes = df_filtered[df_filtered["volume_spike"] == True][
         ["close", "volume", "pct_return", "volume_zscore"]
     ].copy()
@@ -439,7 +387,9 @@ with tab3:
         fig3a.update_layout(
             **CHART_THEME,
             title=dict(text="Drawdown from Rolling Peak (%)", font=dict(size=12, color="#9ca3af")),
-            height=340, margin=dict(l=0, r=0, t=40, b=0)
+            height=340, margin=dict(l=0, r=0, t=40, b=0),
+            yaxis=dict(gridcolor="#1a1d27"),
+            xaxis=dict(gridcolor="#1a1d27")
         )
         st.plotly_chart(fig3a, use_container_width=True)
 
@@ -454,7 +404,9 @@ with tab3:
         fig3b.update_layout(
             **CHART_THEME,
             title=dict(text="30-Day Rolling Volatility (%)", font=dict(size=12, color="#9ca3af")),
-            height=340, margin=dict(l=0, r=0, t=40, b=0)
+            height=340, margin=dict(l=0, r=0, t=40, b=0),
+            yaxis=dict(gridcolor="#1a1d27"),
+            xaxis=dict(gridcolor="#1a1d27")
         )
         st.plotly_chart(fig3b, use_container_width=True)
 
@@ -538,176 +490,3 @@ with tab4:
 
     st.markdown("---")
     st.caption(f"Fundamentals as of {f.get('fetched_at', 'unknown date')}   ·   Source: Yahoo Finance")
-
-# ════════════════════════════════════════════════════════════
-# TAB 5 — Comparisons
-# ════════════════════════════════════════════════════════════
-with tab5:
-    st.markdown("**Comparative Analysis**")
-    st.markdown(
-        "<div style='font-size:12px;color:#6b7280;margin-bottom:16px;'>"
-        "LTRN is fixed as the base. Enter one or two additional tickers to compare. "
-        "Leave Ticker 2 blank for a 1v1 comparison."
-        "</div>",
-        unsafe_allow_html=True
-    )
-
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown(
-            "<div style='font-size:11px;color:#6b7280;letter-spacing:0.8px;text-transform:uppercase;"
-            "font-weight:500;margin-bottom:6px;'>Base Ticker</div>"
-            "<div style='font-size:14px;color:#ffffff;font-weight:600;padding:10px 12px;"
-            "background:#0f1117;border:1px solid #1e2130;border-radius:4px;'>"
-            "LTRN &nbsp;·&nbsp; Lantern Pharma</div>",
-            unsafe_allow_html=True
-        )
-    with c2:
-        ticker2 = st.text_input(
-            "Comparison Ticker 1",
-            value="PSTV",
-            placeholder="e.g. AAPL, MSFT, PSTV"
-        ).strip().upper()
-    with c3:
-        ticker3 = st.text_input(
-            "Comparison Ticker 2 (optional)",
-            value="",
-            placeholder="e.g. RENB, GRCE"
-        ).strip().upper()
-
-    comp_timeframe = st.selectbox(
-        "Comparison Period",
-        ["1 Month", "3 Months", "6 Months", "1 Year", "2 Years"],
-        index=3,
-        key="comp_timeframe"
-    )
-    comp_days = timeframe_map[comp_timeframe]
-
-    st.markdown("---")
-
-    # Build dataset
-    color_map = {"LTRN": LTRN_COLOR}
-    comp_data  = {}
-    comp_names = {}
-
-    ltrn_slice = df.tail(comp_days)[["close", "volume"]].copy()
-    comp_data["LTRN"]  = ltrn_slice
-    comp_names["LTRN"] = "Lantern Pharma (LTRN)"
-
-    if ticker2 and ticker2 != "LTRN":
-        with st.spinner(f"Retrieving data for {ticker2}..."):
-            df2, name2 = fetch_comparison_ticker(ticker2)
-        if df2 is not None:
-            comp_data[ticker2]  = df2.tail(comp_days)
-            comp_names[ticker2] = f"{name2} ({ticker2})" if name2 else ticker2
-            color_map[ticker2]  = COMP1_COLOR
-        else:
-            st.warning(f"No data returned for {ticker2}. Verify the ticker symbol.")
-
-    if ticker3 and ticker3 not in ["LTRN", ticker2]:
-        with st.spinner(f"Retrieving data for {ticker3}..."):
-            df3, name3 = fetch_comparison_ticker(ticker3)
-        if df3 is not None:
-            comp_data[ticker3]  = df3.tail(comp_days)
-            comp_names[ticker3] = f"{name3} ({ticker3})" if name3 else ticker3
-            color_map[ticker3]  = COMP2_COLOR
-        else:
-            st.warning(f"No data returned for {ticker3}. Verify the ticker symbol.")
-
-    # Indexed price chart
-    st.markdown("**Indexed Price Performance — Base 100**")
-    st.caption("All series indexed to 100 at the start of the selected period. Reflects percentage return regardless of absolute share price.")
-
-    fig5a = go.Figure()
-    for ticker, data in comp_data.items():
-        if data is None or data.empty:
-            continue
-        indexed = (data["close"] / data["close"].iloc[0]) * 100
-        fig5a.add_trace(go.Scatter(
-            x=indexed.index, y=indexed.values,
-            name=comp_names[ticker],
-            line=dict(color=color_map.get(ticker, NEUTRAL_COLOR), width=2),
-            hovertemplate=f"<b>{comp_names[ticker]}</b><br>%{{x|%b %d, %Y}}<br>Index: %{{y:.1f}}<extra></extra>"
-        ))
-
-    fig5a.add_hline(y=100, line_dash="dash", line_color="#374151", opacity=0.8,
-                    annotation_text="Base (100)", annotation_font_size=10)
-    fig5a.update_layout(
-        **CHART_THEME,
-        height=420, margin=dict(l=0, r=0, t=10, b=0),
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0,
-                    bgcolor="rgba(0,0,0,0)", font=dict(size=11, color="#9ca3af")),
-        hovermode="x unified",
-        yaxis=dict(title="Indexed Price", gridcolor="#1a1d27"),
-        xaxis=dict(gridcolor="#1a1d27")
-    )
-    st.plotly_chart(fig5a, use_container_width=True)
-
-    # Volume panel
-    st.markdown("**Volume by Security**")
-    n = len(comp_data)
-    fig5b = make_subplots(
-        rows=n, cols=1,
-        shared_xaxes=True,
-        vertical_spacing=0.06,
-        subplot_titles=[comp_names[t] for t in comp_data.keys()]
-    )
-    for i, (ticker, data) in enumerate(comp_data.items()):
-        if data is None or data.empty:
-            continue
-        fig5b.add_trace(go.Bar(
-            x=data.index, y=data["volume"],
-            name=comp_names[ticker],
-            marker_color=color_map.get(ticker, NEUTRAL_COLOR),
-            opacity=0.65,
-            hovertemplate=f"{ticker}  %{{x|%b %d, %Y}}<br>Volume: %{{y:,.0f}}<extra></extra>"
-        ), row=i+1, col=1)
-
-    fig5b.update_layout(
-        **CHART_THEME,
-        height=max(260, 130 * n),
-        margin=dict(l=0, r=0, t=30, b=0),
-        showlegend=False
-    )
-    fig5b.update_yaxes(gridcolor="#1a1d27")
-    fig5b.update_xaxes(gridcolor="#1a1d27")
-    st.plotly_chart(fig5b, use_container_width=True)
-
-    # Fundamentals table
-    st.markdown("**Fundamentals**")
-    fund_rows = []
-    for ticker in comp_data.keys():
-        try:
-            info = yf.Ticker(ticker).info
-            fund_rows.append({
-                "Ticker": ticker,
-                "Company": info.get("longName", ticker),
-                "Price": fmt_currency(info.get("currentPrice")),
-                "Market Cap": fmt_millions(info.get("marketCap")),
-                "Cash": fmt_millions(info.get("totalCash")),
-                "EPS (TTM)": fmt_currency(info.get("trailingEps")),
-                "52W High": fmt_currency(info.get("fiftyTwoWeekHigh")),
-                "52W Low": fmt_currency(info.get("fiftyTwoWeekLow")),
-                "Beta": f"{round(float(info.get('beta', 0)), 2)}" if info.get("beta") else "N/A",
-            })
-        except:
-            fund_rows.append({"Ticker": ticker, "Company": ticker})
-
-    if fund_rows:
-        st.dataframe(pd.DataFrame(fund_rows).set_index("Ticker"), use_container_width=True)
-
-    # Return summary
-    st.markdown("---")
-    st.markdown("**Return Summary**")
-    ret_cols = st.columns(len(comp_data))
-    for i, (ticker, data) in enumerate(comp_data.items()):
-        if data is None or data.empty:
-            continue
-        total_ret  = ((data["close"].iloc[-1] / data["close"].iloc[0]) - 1) * 100
-        best_day   = data["close"].pct_change().max() * 100
-        worst_day  = data["close"].pct_change().min() * 100
-        with ret_cols[i]:
-            st.markdown(f"<div style='font-size:12px;color:#9ca3af;margin-bottom:8px;'>{comp_names[ticker]}</div>", unsafe_allow_html=True)
-            st.metric(f"Return ({comp_timeframe})", f"{total_ret:+.1f}%")
-            st.metric("Best Session", f"{best_day:+.2f}%")
-            st.metric("Worst Session", f"{worst_day:+.2f}%")
