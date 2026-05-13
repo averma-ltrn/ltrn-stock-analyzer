@@ -88,6 +88,15 @@ CHART_THEME = dict(
     font=dict(family="Inter, Segoe UI, sans-serif", color="#9ca3af", size=11),
 )
 
+# Legend anchored to top LEFT so it never overlaps the Plotly toolbar (top right)
+LEGEND = dict(
+    orientation="h",
+    yanchor="bottom", y=1.01,
+    xanchor="left", x=0,
+    bgcolor="rgba(0,0,0,0)",
+    font=dict(size=11, color="#9ca3af")
+)
+
 LTRN_COLOR    = "#c84b0a"
 COMP1_COLOR   = "#3b82f6"
 COMP2_COLOR   = "#10b981"
@@ -282,12 +291,8 @@ with tab1:
     fig.update_layout(
         **CHART_THEME,
         height=520,
-        margin=dict(l=0, r=0, t=10, b=0),
-        legend=dict(
-            orientation="h", yanchor="bottom", y=1.01,
-            xanchor="right", x=1,
-            bgcolor="rgba(0,0,0,0)", font=dict(size=11, color="#9ca3af")
-        ),
+        margin=dict(l=0, r=0, t=40, b=0),
+        legend=LEGEND,
         hovermode="x unified"
     )
     fig.update_yaxes(title_text="Price (USD)", row=1, col=1, gridcolor="#1a1d27")
@@ -351,10 +356,9 @@ with tab2:
     fig2.update_layout(
         **CHART_THEME,
         height=520,
-        margin=dict(l=0, r=0, t=30, b=0),
+        margin=dict(l=0, r=0, t=40, b=0),
         hovermode="x unified",
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="right", x=1,
-                    bgcolor="rgba(0,0,0,0)", font=dict(size=11, color="#9ca3af"))
+        legend=LEGEND
     )
     fig2.update_yaxes(gridcolor="#1a1d27")
     fig2.update_xaxes(gridcolor="#1a1d27")
