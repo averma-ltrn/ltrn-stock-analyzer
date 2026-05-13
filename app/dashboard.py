@@ -19,12 +19,12 @@ st.markdown("""
         html, body, [class*="css"] {
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
-        .main { background-color: #0a0c10; }
+        .main { background-color: #0E1623; }
         .block-container { padding-top: 2rem; padding-bottom: 2rem; }
 
         section[data-testid="stSidebar"] {
-            background-color: #0f1117;
-            border-right: 1px solid #1e2130;
+            background-color: #0b1220;
+            border-right: 1px solid #1c2a3e;
         }
 
         h1 {
@@ -39,13 +39,13 @@ st.markdown("""
         }
 
         div[data-testid="metric-container"] {
-            background-color: #0f1117;
-            border: 1px solid #1e2130;
+            background-color: #111f30;
+            border: 1px solid #1c2a3e;
             border-radius: 4px;
             padding: 18px 20px;
         }
         div[data-testid="metric-container"] label {
-            color: #6b7280 !important;
+            color: #6b8aad !important;
             font-size: 11px !important;
             font-weight: 500 !important;
             letter-spacing: 0.8px;
@@ -65,7 +65,7 @@ st.markdown("""
             font-weight: 500 !important;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            color: #6b7280 !important;
+            color: #6b8aad !important;
             border-bottom: 2px solid transparent;
             padding: 10px 20px !important;
         }
@@ -74,27 +74,26 @@ st.markdown("""
             border-bottom: 2px solid #c84b0a !important;
         }
 
-        hr { border-color: #1e2130 !important; margin: 1.2rem 0; }
-        .stDataFrame { border: 1px solid #1e2130; border-radius: 4px; }
-        .stCaption { color: #4b5563 !important; font-size: 11px !important; }
+        hr { border-color: #1c2a3e !important; margin: 1.2rem 0; }
+        .stDataFrame { border: 1px solid #1c2a3e; border-radius: 4px; }
+        .stCaption { color: #4b6a8a !important; font-size: 11px !important; }
     </style>
 """, unsafe_allow_html=True)
 
 # ── Chart theme ───────────────────────────────────────────
 CHART_THEME = dict(
     template="plotly_dark",
-    paper_bgcolor="#0a0c10",
-    plot_bgcolor="#0a0c10",
-    font=dict(family="Inter, Segoe UI, sans-serif", color="#9ca3af", size=11),
+    paper_bgcolor="#0E1623",
+    plot_bgcolor="#0E1623",
+    font=dict(family="Inter, Segoe UI, sans-serif", color="#8aa4c0", size=11),
 )
 
-# Legend anchored to top LEFT so it never overlaps the Plotly toolbar (top right)
 LEGEND = dict(
     orientation="h",
     yanchor="bottom", y=1.01,
     xanchor="left", x=0,
     bgcolor="rgba(0,0,0,0)",
-    font=dict(size=11, color="#9ca3af")
+    font=dict(size=11, color="#8aa4c0")
 )
 
 LTRN_COLOR    = "#c84b0a"
@@ -102,7 +101,8 @@ COMP1_COLOR   = "#3b82f6"
 COMP2_COLOR   = "#10b981"
 DOWN_COLOR    = "#ef4444"
 UP_COLOR      = "#22c55e"
-NEUTRAL_COLOR = "#6b7280"
+NEUTRAL_COLOR = "#4b6a8a"
+GRID_COLOR    = "#162030"
 
 # ── Data loaders ──────────────────────────────────────────
 @st.cache_data(ttl=3600)
@@ -136,14 +136,14 @@ def fmt_currency(val):
 with st.sidebar:
     st.markdown("""
         <div style='padding: 8px 0 16px 0;'>
-            <div style='font-size: 11px; color: #6b7280; letter-spacing: 1px; text-transform: uppercase; font-weight: 500;'>Stock Price Analytics</div>
+            <div style='font-size: 11px; color: #6b8aad; letter-spacing: 1px; text-transform: uppercase; font-weight: 500;'>Stock Price Analytics</div>
             <div style='font-size: 18px; color: #ffffff; font-weight: 600; margin-top: 4px;'>Lantern Pharma</div>
-            <div style='font-size: 12px; color: #6b7280; margin-top: 2px;'>NASDAQ: LTRN</div>
+            <div style='font-size: 12px; color: #6b8aad; margin-top: 2px;'>NASDAQ: LTRN</div>
         </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
 
-    st.markdown("<div style='font-size:11px;color:#6b7280;letter-spacing:0.8px;text-transform:uppercase;font-weight:500;margin-bottom:8px;'>Display Settings</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:11px;color:#6b8aad;letter-spacing:0.8px;text-transform:uppercase;font-weight:500;margin-bottom:8px;'>Display Settings</div>", unsafe_allow_html=True)
 
     timeframe = st.selectbox(
         "Timeframe",
@@ -151,7 +151,7 @@ with st.sidebar:
         index=3,
         label_visibility="collapsed"
     )
-    st.markdown("<div style='font-size:11px;color:#6b7280;margin-bottom:12px;'>Selected period</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:11px;color:#6b8aad;margin-bottom:12px;'>Selected period</div>", unsafe_allow_html=True)
 
     show_ma     = st.checkbox("Moving Averages (MA20 / MA50)", value=True)
     show_bb     = st.checkbox("Bollinger Bands", value=False)
@@ -159,7 +159,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("""
-        <div style='font-size:11px;color:#4b5563;line-height:1.6;'>
+        <div style='font-size:11px;color:#4b6a8a;line-height:1.6;'>
             Data source: Yahoo Finance<br>
             Refreshed daily via automated pipeline
         </div>
@@ -186,7 +186,7 @@ with col_title:
     st.markdown("<h1 style='margin-bottom:2px;'>Lantern Pharma &nbsp;·&nbsp; NASDAQ: LTRN</h1>", unsafe_allow_html=True)
 with col_date:
     st.markdown(f"""
-        <div style='text-align:right;padding-top:12px;font-size:11px;color:#6b7280;letter-spacing:0.5px;'>
+        <div style='text-align:right;padding-top:12px;font-size:11px;color:#6b8aad;letter-spacing:0.5px;'>
             Data through {df.index.max().strftime('%B %d, %Y')}
         </div>
     """, unsafe_allow_html=True)
@@ -276,7 +276,7 @@ with tab1:
         fig.add_trace(go.Scatter(
             x=df_filtered.index, y=df_filtered["bb_lower"],
             name="BB Lower", line=dict(color=NEUTRAL_COLOR, width=1, dash="dash"),
-            fill="tonexty", fillcolor="rgba(107,114,128,0.06)",
+            fill="tonexty", fillcolor="rgba(75,106,138,0.08)",
             hovertemplate="BB Lower: $%{y:.2f}<extra></extra>"
         ), row=1, col=1)
 
@@ -295,9 +295,9 @@ with tab1:
         legend=LEGEND,
         hovermode="x unified"
     )
-    fig.update_yaxes(title_text="Price (USD)", row=1, col=1, gridcolor="#1a1d27")
-    fig.update_yaxes(title_text="Volume", row=2, col=1, gridcolor="#1a1d27")
-    fig.update_xaxes(gridcolor="#1a1d27", showgrid=True)
+    fig.update_yaxes(title_text="Price (USD)", row=1, col=1, gridcolor=GRID_COLOR)
+    fig.update_yaxes(title_text="Volume", row=2, col=1, gridcolor=GRID_COLOR)
+    fig.update_xaxes(gridcolor=GRID_COLOR, showgrid=True)
     st.plotly_chart(fig, use_container_width=True)
 
     spikes = df_filtered[df_filtered["volume_spike"] == True][
@@ -360,8 +360,8 @@ with tab2:
         hovermode="x unified",
         legend=LEGEND
     )
-    fig2.update_yaxes(gridcolor="#1a1d27")
-    fig2.update_xaxes(gridcolor="#1a1d27")
+    fig2.update_yaxes(gridcolor=GRID_COLOR)
+    fig2.update_xaxes(gridcolor=GRID_COLOR)
     st.plotly_chart(fig2, use_container_width=True)
 
     st.markdown("---")
@@ -384,16 +384,16 @@ with tab3:
         fig3a = go.Figure()
         fig3a.add_trace(go.Scatter(
             x=df_filtered.index, y=df_filtered["drawdown_pct"],
-            fill="tozeroy", fillcolor="rgba(239,68,68,0.12)",
+            fill="tozeroy", fillcolor="rgba(239,68,68,0.10)",
             line=dict(color=DOWN_COLOR, width=1.5), name="Drawdown",
             hovertemplate="<b>%{x|%b %d, %Y}</b><br>Drawdown: %{y:.2f}%<extra></extra>"
         ))
         fig3a.update_layout(
             **CHART_THEME,
-            title=dict(text="Drawdown from Rolling Peak (%)", font=dict(size=12, color="#9ca3af")),
+            title=dict(text="Drawdown from Rolling Peak (%)", font=dict(size=12, color="#8aa4c0")),
             height=340, margin=dict(l=0, r=0, t=40, b=0),
-            yaxis=dict(gridcolor="#1a1d27"),
-            xaxis=dict(gridcolor="#1a1d27")
+            yaxis=dict(gridcolor=GRID_COLOR),
+            xaxis=dict(gridcolor=GRID_COLOR)
         )
         st.plotly_chart(fig3a, use_container_width=True)
 
@@ -401,16 +401,16 @@ with tab3:
         fig3b = go.Figure()
         fig3b.add_trace(go.Scatter(
             x=df_filtered.index, y=df_filtered["volatility_30d"],
-            fill="tozeroy", fillcolor="rgba(200,75,10,0.1)",
+            fill="tozeroy", fillcolor="rgba(200,75,10,0.08)",
             line=dict(color=LTRN_COLOR, width=1.5), name="30D Volatility",
             hovertemplate="<b>%{x|%b %d, %Y}</b><br>Volatility: %{y:.2f}%<extra></extra>"
         ))
         fig3b.update_layout(
             **CHART_THEME,
-            title=dict(text="30-Day Rolling Volatility (%)", font=dict(size=12, color="#9ca3af")),
+            title=dict(text="30-Day Rolling Volatility (%)", font=dict(size=12, color="#8aa4c0")),
             height=340, margin=dict(l=0, r=0, t=40, b=0),
-            yaxis=dict(gridcolor="#1a1d27"),
-            xaxis=dict(gridcolor="#1a1d27")
+            yaxis=dict(gridcolor=GRID_COLOR),
+            xaxis=dict(gridcolor=GRID_COLOR)
         )
         st.plotly_chart(fig3b, use_container_width=True)
 
@@ -419,13 +419,13 @@ with tab3:
         x=df_filtered["pct_return"].dropna(), nbinsx=50,
         marker_color=LTRN_COLOR, opacity=0.7, name="Daily Returns"
     ))
-    fig3c.add_vline(x=0, line_dash="dash", line_color="#6b7280", opacity=0.6)
+    fig3c.add_vline(x=0, line_dash="dash", line_color="#4b6a8a", opacity=0.8)
     fig3c.update_layout(
         **CHART_THEME,
-        title=dict(text="Distribution of Daily Returns (%)", font=dict(size=12, color="#9ca3af")),
+        title=dict(text="Distribution of Daily Returns (%)", font=dict(size=12, color="#8aa4c0")),
         height=300, margin=dict(l=0, r=0, t=40, b=0),
-        xaxis=dict(title="Daily Return (%)", gridcolor="#1a1d27"),
-        yaxis=dict(title="Frequency", gridcolor="#1a1d27")
+        xaxis=dict(title="Daily Return (%)", gridcolor=GRID_COLOR),
+        yaxis=dict(title="Frequency", gridcolor=GRID_COLOR)
     )
     st.plotly_chart(fig3c, use_container_width=True)
 
@@ -482,13 +482,13 @@ with tab4:
         line=dict(color=LTRN_COLOR, width=1.8), name="Indexed Price",
         hovertemplate="<b>%{x|%b %d, %Y}</b><br>Index: %{y:.1f}<extra></extra>"
     ))
-    fig4.add_hline(y=100, line_dash="dash", line_color="#374151", opacity=0.8,
+    fig4.add_hline(y=100, line_dash="dash", line_color="#1c2a3e", opacity=1.0,
                    annotation_text="Base period (100)", annotation_font_size=10)
     fig4.update_layout(
         **CHART_THEME,
         height=340, margin=dict(l=0, r=0, t=10, b=0),
-        yaxis=dict(title="Indexed Price", gridcolor="#1a1d27"),
-        xaxis=dict(gridcolor="#1a1d27")
+        yaxis=dict(title="Indexed Price", gridcolor=GRID_COLOR),
+        xaxis=dict(gridcolor=GRID_COLOR)
     )
     st.plotly_chart(fig4, use_container_width=True)
 
