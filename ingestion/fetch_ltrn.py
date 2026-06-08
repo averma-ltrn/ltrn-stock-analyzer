@@ -2,6 +2,7 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime
 import os
+import json
 
 # ── Config ──────────────────────────────────────────────
 TICKER = "LTRN"
@@ -72,6 +73,49 @@ def fetch_fundamentals():
 
     return df
 
+# ── Write market snapshot JSON for CFO Assistant ─────────
+def write_market_snapshot(prices_df, fundamentals_df):
+    print(f"[{timestamp()}] Writing market snapshot JSON...")
+
+    info = fundamentals_df.iloc[0].to_dict()
+
+    # Pull prev close and today's volume from the last two rows of price history
+    price       = info.get("current_price")
+    prev_close  = None
+    volume      = None
+    change      = None
+    change_pct  = None
+
+    if prices_df is not None and len(prices_df) >= 2:
+        prev_close = float(prices_df["close"].iloc[-2])
+        volume     = int(prices_df["volume"].iloc[-1])
+        if price is not None and prev_close is not None:
+            change     = round(price - prev_close, 4)
+            change_pct = round((change / prev_close) * 100, 4)
+
+    snapshot = {
+        "ticker":           TICKER,
+        "fetched_at":       datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "price":            price,
+        "previous_close":   prev_close,
+        "change":           change,
+        "change_pct":       change_pct,
+        "volume":           volume,
+        "market_cap":       info.get("market_cap"),
+        "fifty_two_week_high": info.get("52w_high"),
+        "fifty_two_week_low":  info.get("52w_low"),
+        "shares_outstanding":  info.get("shares_outstanding"),
+        "avg_volume_30d":   info.get("avg_volume_30d"),
+        "currency":         "USD",
+    }
+
+    path = os.path.join(RAW_DIR, "ltrn_market_snapshot.json")
+    with open(path, "w") as f:
+        json.dump(snapshot, f, indent=2, default=str)
+
+    print(f"  ✓ Saved to {path}")
+    return snapshot
+
 # ── Save to CSV ──────────────────────────────────────────
 def save(df, filename):
     path = os.path.join(RAW_DIR, filename)
@@ -97,6 +141,12 @@ def main():
     fundamentals = fetch_fundamentals()
     if fundamentals is not None:
         save(fundamentals, "ltrn_fundamentals_raw.csv")
+
+    print()
+
+    # Market snapshot JSON — for CFO Assistant equity tab
+    if prices is not None and fundamentals is not None:
+        write_market_snapshot(prices, fundamentals)
 
     print()
     print("=" * 50)
