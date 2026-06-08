@@ -1,12 +1,12 @@
 {
   "ticker": "LTRN",
-  "fetched_at": "2026-06-08T18:59:19Z",
-  "price": 3.75,
+  "fetched_at": "2026-06-08T19:19:00Z",
+  "price": 3.745,
   "previous_close": 3.5899999141693115,
-  "change": 0.16,
-  "change_pct": 4.4568,
-  "volume": 340882,
-  "market_cap": 47845768,
+  "change": 0.155,
+  "change_pct": 4.3175,
+  "volume": 348160,
+  "market_cap": 47781976,
   "fifty_two_week_high": 5.744,
   "fifty_two_week_low": 1.11,
   "shares_outstanding": 12758872,
@@ -18,70 +18,70 @@
       "shares": 864435,
       "date_reported": "2026-03-31",
       "pct_held": 0.0765,
-      "value": 3241631
+      "value": 3237308
     },
     {
       "organization": "Vanguard Capital Management LLC",
       "shares": 332079,
       "date_reported": "2026-03-31",
       "pct_held": 0.0294,
-      "value": 1245296
+      "value": 1243635
     },
     {
       "organization": "CM Management, LLC",
       "shares": 250000,
       "date_reported": "2026-03-31",
       "pct_held": 0.0221,
-      "value": 937500
+      "value": 936249
     },
     {
       "organization": "Renaissance Technologies, LLC",
       "shares": 116000,
       "date_reported": "2026-03-31",
       "pct_held": 0.010299999,
-      "value": 435000
+      "value": 434419
     },
     {
       "organization": "Geode Capital Management, LLC",
       "shares": 111646,
       "date_reported": "2026-03-31",
       "pct_held": 0.0099,
-      "value": 418672
+      "value": 418114
     },
     {
       "organization": "Westside Investment Management, Inc.",
       "shares": 50050,
       "date_reported": "2026-03-31",
       "pct_held": 0.0044,
-      "value": 187687
+      "value": 187437
     },
     {
       "organization": "Vanguard Fiduciary Trust Co",
       "shares": 49607,
       "date_reported": "2026-03-31",
       "pct_held": 0.0044,
-      "value": 186026
+      "value": 185778
     },
     {
       "organization": "Voss Capital, LP",
       "shares": 50000,
       "date_reported": "2026-03-31",
       "pct_held": 0.0044,
-      "value": 187500
+      "value": 187249
     },
     {
       "organization": "Blackrock Inc.",
       "shares": 45267,
       "date_reported": "2026-03-31",
       "pct_held": 0.004,
-      "value": 169751
+      "value": 169524
     },
     {
       "organization": "Dimensional Fund Advisors LP",
       "shares": 38060,
       "date_reported": "2026-03-31",
       "pct_held": 0.0034,
-      "value": 142725
+      "value": 142534
     }
   ],
   "mutualfund_holders": [
@@ -90,70 +90,126 @@
       "shares": 250635,
       "date_reported": "2026-03-31",
       "pct_held": 0.0222,
-      "value": 939881
+      "value": 938628
     },
     {
       "organization": "VANGUARD INDEX FUNDS-Vanguard Extended Market Index Fund",
       "shares": 81444,
       "date_reported": "2026-03-31",
       "pct_held": 0.0072000003,
-      "value": 305415
+      "value": 305007
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Extended Market Index Fund",
       "shares": 60431,
       "date_reported": "2026-03-31",
       "pct_held": 0.0053,
-      "value": 226616
+      "value": 226314
     },
     {
       "organization": "Listed Funds Trust-Horizon Kinetics Medical ETF",
       "shares": 26373,
       "date_reported": "2026-03-31",
       "pct_held": 0.0023,
-      "value": 98898
+      "value": 98766
     },
     {
       "organization": "iShares Trust-iShares Micro-Cap ETF",
       "shares": 21373,
       "date_reported": "2026-03-31",
       "pct_held": 0.0019,
-      "value": 80148
+      "value": 80041
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Total Market Index Fund",
       "shares": 15273,
       "date_reported": "2026-03-31",
       "pct_held": 0.0014,
-      "value": 57273
+      "value": 57197
     },
     {
       "organization": "DFA INVESTMENT DIMENSIONS GROUP INC-U.S. Small Cap Portfolio",
       "shares": 12797,
       "date_reported": "2026-01-31",
       "pct_held": 0.0011,
-      "value": 47988
+      "value": 47924
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Series Total Market Index Fund",
       "shares": 11259,
       "date_reported": "2026-03-31",
       "pct_held": 0.001,
-      "value": 42221
+      "value": 42164
     },
     {
       "organization": "DFA INVESTMENT DIMENSIONS GROUP INC-U.S. Social Core Eqy. 2 PORT.",
       "shares": 10400,
       "date_reported": "2026-01-31",
       "pct_held": 0.00090000004,
-      "value": 39000
+      "value": 38947
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Nasdaq Composite Index Fund",
       "shares": 6838,
       "date_reported": "2026-03-31",
       "pct_held": 0.00059999997,
-      "value": 25642
+      "value": 25608
+    }
+  ],
+  "insider_transactions": [
+    {
+      "insider": "KEYSER DONALD JEFFREY PH.D",
+      "position": "Director",
+      "tx_type": "",
+      "date": "2026-05-12",
+      "shares": 48544,
+      "value": 100001,
+      "ownership": "D"
+    },
+    {
+      "insider": "SCHALOP LEE TROY",
+      "position": "Director",
+      "tx_type": "",
+      "date": "2026-05-12",
+      "shares": 48544,
+      "value": 100001,
+      "ownership": "D"
+    },
+    {
+      "insider": "KREIS LESLIE W JR",
+      "position": "Beneficial Owner of more than 10% of a Class of Security",
+      "tx_type": "",
+      "date": "2025-06-13",
+      "shares": 40000,
+      "value": 123600,
+      "ownership": "I"
+    },
+    {
+      "insider": "KREIS LESLIE W JR",
+      "position": "Beneficial Owner of more than 10% of a Class of Security",
+      "tx_type": "",
+      "date": "2025-06-12",
+      "shares": 61613,
+      "value": 208271,
+      "ownership": "I"
+    },
+    {
+      "insider": "KREIS LESLIE W JR",
+      "position": "Beneficial Owner of more than 10% of a Class of Security",
+      "tx_type": "",
+      "date": "2025-05-29",
+      "shares": 56237,
+      "value": 168419,
+      "ownership": "I"
+    },
+    {
+      "insider": "KEYSER DONALD JEFFREY PH.D",
+      "position": "Director",
+      "tx_type": "",
+      "date": "2024-07-24",
+      "shares": 3832,
+      "value": 16937,
+      "ownership": "D"
     }
   ]
 }

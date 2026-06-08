@@ -26,20 +26,14 @@ def fetch_price_history():
         print("  ERROR: No price data returned. Check ticker symbol.")
         return None
 
-    # Clean up index
     df.index = pd.to_datetime(df.index).tz_localize(None)
     df.index.name = "date"
-
-    # Keep only the columns we need
     df = df[["Open", "High", "Low", "Close", "Volume"]].copy()
     df.columns = ["open", "high", "low", "close", "volume"]
-
-    # Add ticker column
     df.insert(0, "ticker", TICKER)
 
     print(f"  ✓ {len(df)} trading days retrieved")
     print(f"  ✓ Date range: {df.index.min().date()} → {df.index.max().date()}")
-
     return df
 
 # ── Fetch fundamentals snapshot ──────────────────────────
@@ -86,11 +80,11 @@ def fetch_holders(ticker_obj):
             return rows
         for _, row in df.iterrows():
             rows.append({
-                "organization": str(row.get("Holder", row.iloc[0])).strip(),
-                "shares":       int(row.get("Shares", 0)) if pd.notna(row.get("Shares", None)) else None,
+                "organization":  str(row.get("Holder", row.iloc[0])).strip(),
+                "shares":        int(row.get("Shares", 0)) if pd.notna(row.get("Shares", None)) else None,
                 "date_reported": str(row.get("Date Reported", ""))[:10] if pd.notna(row.get("Date Reported", None)) else None,
-                "pct_held":     float(row.get("pctHeld", row.get("% Out", 0))) if pd.notna(row.get("pctHeld", row.get("% Out", None))) else None,
-                "value":        int(row.get("Value", 0)) if pd.notna(row.get("Value", None)) else None,
+                "pct_held":      float(row.get("pctHeld", row.get("% Out", 0))) if pd.notna(row.get("pctHeld", row.get("% Out", None))) else None,
+                "value":         int(row.get("Value", 0)) if pd.notna(row.get("Value", None)) else None,
             })
         return rows
 
@@ -110,13 +104,37 @@ def fetch_holders(ticker_obj):
 
     return institutional_holders, mutualfund_holders
 
+# ── Fetch insider transactions ────────────────────────────
+def fetch_insider_transactions(ticker_obj):
+    print(f"[{timestamp()}] Fetching insider transactions for {TICKER}...")
+
+    insider_transactions = []
+
+    try:
+        it = ticker_obj.insider_transactions
+        if it is not None and not it.empty:
+            for _, row in it.iterrows():
+                insider_transactions.append({
+                    "insider":    str(row.get("Insider", "")).strip(),
+                    "position":   str(row.get("Position", "")).strip(),
+                    "tx_type":    str(row.get("Transaction", row.get("Start Date", ""))).strip(),
+                    "date":       str(row.get("Start Date", row.get("Date", "")))[:10] if pd.notna(row.get("Start Date", row.get("Date", None))) else None,
+                    "shares":     int(row.get("Shares", 0)) if pd.notna(row.get("Shares", None)) else None,
+                    "value":      int(row.get("Value", 0)) if pd.notna(row.get("Value", None)) else None,
+                    "ownership":  str(row.get("Ownership", "")).strip(),
+                })
+        print(f"  ✓ Insider transactions: {len(insider_transactions)} rows")
+    except Exception as e:
+        print(f"  ⚠ Insider transactions fetch failed: {e}")
+
+    return insider_transactions
+
 # ── Write market snapshot JSON for CFO Assistant ─────────
-def write_market_snapshot(prices_df, fundamentals_df, institutional_holders, mutualfund_holders):
+def write_market_snapshot(prices_df, fundamentals_df, institutional_holders, mutualfund_holders, insider_transactions):
     print(f"[{timestamp()}] Writing market snapshot JSON...")
 
     info = fundamentals_df.iloc[0].to_dict()
 
-    # Pull prev close and today's volume from the last two rows of price history
     price      = info.get("current_price")
     prev_close = None
     volume     = None
@@ -144,8 +162,9 @@ def write_market_snapshot(prices_df, fundamentals_df, institutional_holders, mut
         "shares_outstanding":  info.get("shares_outstanding"),
         "avg_volume_30d":      info.get("avg_volume_30d"),
         "currency":            "USD",
-        "institutional_holders": institutional_holders,
-        "mutualfund_holders":    mutualfund_holders,
+        "institutional_holders":  institutional_holders,
+        "mutualfund_holders":     mutualfund_holders,
+        "insider_transactions":   insider_transactions,
     }
 
     path = os.path.join(RAW_DIR, "ltrn_market_snapshot.json")
@@ -169,28 +188,28 @@ def main():
 
     ensure_dirs()
 
-    # Price history
     prices = fetch_price_history()
     if prices is not None:
         save(prices, "ltrn_prices_raw.csv")
 
     print()
 
-    # Fundamentals — also returns the ticker object so we reuse it for holders
     fundamentals, ticker_obj = fetch_fundamentals()
     if fundamentals is not None:
         save(fundamentals, "ltrn_fundamentals_raw.csv")
 
     print()
 
-    # Holder data
     institutional_holders, mutualfund_holders = fetch_holders(ticker_obj)
 
     print()
 
-    # Market snapshot JSON — for CFO Assistant equity tab
+    insider_transactions = fetch_insider_transactions(ticker_obj)
+
+    print()
+
     if prices is not None and fundamentals is not None:
-        write_market_snapshot(prices, fundamentals, institutional_holders, mutualfund_holders)
+        write_market_snapshot(prices, fundamentals, institutional_holders, mutualfund_holders, insider_transactions)
 
     print()
     print("=" * 50)
