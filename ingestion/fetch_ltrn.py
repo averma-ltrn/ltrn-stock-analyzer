@@ -77,46 +77,41 @@ def fetch_fundamentals():
 def fetch_holders(ticker_obj):
     print(f"[{timestamp()}] Fetching holder data for {TICKER}...")
 
-    major_holders = []
     institutional_holders = []
+    mutualfund_holders    = []
 
-    try:
-        mh = ticker_obj.major_holders
-        if mh is not None and not mh.empty:
-            # major_holders is a 2-col DataFrame: value | breakdown label
-            for _, row in mh.iterrows():
-                val   = row.iloc[0]
-                label = row.iloc[1]
-                # Convert percentage strings like "10.45%" to float 0.1045
-                if isinstance(val, str) and "%" in val:
-                    val = float(val.strip("%")) / 100
-                major_holders.append({
-                    "name":    str(label),
-                    "pct_held": float(val) if val is not None else None,
-                })
-        print(f"  ✓ Major holders: {len(major_holders)} rows")
-    except Exception as e:
-        print(f"  ⚠ Major holders fetch failed: {e}")
+    def parse_holders_df(df):
+        rows = []
+        if df is None or df.empty:
+            return rows
+        for _, row in df.iterrows():
+            rows.append({
+                "organization": str(row.get("Holder", row.iloc[0])).strip(),
+                "shares":       int(row.get("Shares", 0)) if pd.notna(row.get("Shares", None)) else None,
+                "date_reported": str(row.get("Date Reported", ""))[:10] if pd.notna(row.get("Date Reported", None)) else None,
+                "pct_held":     float(row.get("pctHeld", row.get("% Out", 0))) if pd.notna(row.get("pctHeld", row.get("% Out", None))) else None,
+                "value":        int(row.get("Value", 0)) if pd.notna(row.get("Value", None)) else None,
+            })
+        return rows
 
     try:
         ih = ticker_obj.institutional_holders
-        if ih is not None and not ih.empty:
-            for _, row in ih.iterrows():
-                institutional_holders.append({
-                    "organization": str(row.get("Holder", row.iloc[0])),
-                    "shares":       int(row.get("Shares", 0)) if pd.notna(row.get("Shares", None)) else None,
-                    "date_reported": str(row.get("Date Reported", ""))[:10] if pd.notna(row.get("Date Reported", None)) else None,
-                    "pct_held":     float(row.get("pctHeld", row.get("% Out", 0))) if pd.notna(row.get("pctHeld", row.get("% Out", None))) else None,
-                    "value":        int(row.get("Value", 0)) if pd.notna(row.get("Value", None)) else None,
-                })
+        institutional_holders = parse_holders_df(ih)
         print(f"  ✓ Institutional holders: {len(institutional_holders)} rows")
     except Exception as e:
         print(f"  ⚠ Institutional holders fetch failed: {e}")
 
-    return major_holders, institutional_holders
+    try:
+        mf = ticker_obj.mutualfund_holders
+        mutualfund_holders = parse_holders_df(mf)
+        print(f"  ✓ Mutual fund holders: {len(mutualfund_holders)} rows")
+    except Exception as e:
+        print(f"  ⚠ Mutual fund holders fetch failed: {e}")
+
+    return institutional_holders, mutualfund_holders
 
 # ── Write market snapshot JSON for CFO Assistant ─────────
-def write_market_snapshot(prices_df, fundamentals_df, major_holders, institutional_holders):
+def write_market_snapshot(prices_df, fundamentals_df, institutional_holders, mutualfund_holders):
     print(f"[{timestamp()}] Writing market snapshot JSON...")
 
     info = fundamentals_df.iloc[0].to_dict()
@@ -149,8 +144,8 @@ def write_market_snapshot(prices_df, fundamentals_df, major_holders, institution
         "shares_outstanding":  info.get("shares_outstanding"),
         "avg_volume_30d":      info.get("avg_volume_30d"),
         "currency":            "USD",
-        "major_holders":       major_holders,
         "institutional_holders": institutional_holders,
+        "mutualfund_holders":    mutualfund_holders,
     }
 
     path = os.path.join(RAW_DIR, "ltrn_market_snapshot.json")
@@ -189,13 +184,13 @@ def main():
     print()
 
     # Holder data
-    major_holders, institutional_holders = fetch_holders(ticker_obj)
+    institutional_holders, mutualfund_holders = fetch_holders(ticker_obj)
 
     print()
 
     # Market snapshot JSON — for CFO Assistant equity tab
     if prices is not None and fundamentals is not None:
-        write_market_snapshot(prices, fundamentals, major_holders, institutional_holders)
+        write_market_snapshot(prices, fundamentals, institutional_holders, mutualfund_holders)
 
     print()
     print("=" * 50)
