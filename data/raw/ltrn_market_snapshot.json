@@ -1,11 +1,11 @@
 {
   "ticker": "LTRN",
-  "fetched_at": "2026-07-02T22:54:23Z",
+  "fetched_at": "2026-07-03T22:51:58Z",
   "price": 3.97,
   "previous_close": 4.019999980926514,
   "change": -0.05,
   "change_pct": -1.2438,
-  "volume": 86674,
+  "volume": 86700,
   "market_cap": 50653808,
   "fifty_two_week_high": 5.744,
   "fifty_two_week_low": 1.11,
