@@ -1,11 +1,11 @@
 {
   "ticker": "LTRN",
-  "fetched_at": "2026-09-04T23:29:28Z",
+  "fetched_at": "2026-09-07T23:49:48Z",
   "price": 1.905,
   "previous_close": 1.8700000047683716,
   "change": 0.035,
   "change_pct": 1.8717,
-  "volume": 134530,
+  "volume": 134500,
   "market_cap": 24353798,
   "fifty_two_week_high": 4.703,
   "fifty_two_week_low": 1.11,
@@ -87,10 +87,10 @@
   "mutualfund_holders": [
     {
       "organization": "VANGUARD INDEX FUNDS-Vanguard Total Stock Market Index Fund",
-      "shares": 250635,
-      "date_reported": "2026-03-31",
-      "pct_held": 0.0196,
-      "value": 477459
+      "shares": 338385,
+      "date_reported": "2026-06-30",
+      "pct_held": 0.026500002,
+      "value": 644623
     },
     {
       "organization": "VANGUARD INDEX FUNDS-Vanguard Extended Market Index Fund",
@@ -101,10 +101,10 @@
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Extended Market Index Fund",
-      "shares": 45097,
-      "date_reported": "2026-06-30",
+      "shares": 45013,
+      "date_reported": "2026-07-31",
       "pct_held": 0.0034999999,
-      "value": 85909
+      "value": 85749
     },
     {
       "organization": "Listed Funds Trust-Horizon Kinetics Medical ETF",
@@ -116,14 +116,14 @@
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Series Total Market Index Fund",
       "shares": 17477,
-      "date_reported": "2026-06-30",
+      "date_reported": "2026-07-31",
       "pct_held": 0.0014,
       "value": 33293
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Total Market Index Fund",
       "shares": 15273,
-      "date_reported": "2026-06-30",
+      "date_reported": "2026-07-31",
       "pct_held": 0.0011999999,
       "value": 29095
     },
@@ -144,7 +144,7 @@
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Nasdaq Composite Index Fund",
       "shares": 6838,
-      "date_reported": "2026-06-30",
+      "date_reported": "2026-07-31",
       "pct_held": 0.0005,
       "value": 13026
     },
