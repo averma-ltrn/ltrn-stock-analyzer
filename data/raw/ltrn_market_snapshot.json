@@ -1,12 +1,12 @@
 {
   "ticker": "LTRN",
-  "fetched_at": "2026-10-30T01:24:11Z",
-  "price": 0.731,
-  "previous_close": 0.7739999890327454,
-  "change": -0.043,
-  "change_pct": -5.5556,
-  "volume": 233063,
-  "market_cap": 10917906,
+  "fetched_at": "2026-10-31T01:09:11Z",
+  "price": 0.6608,
+  "previous_close": 0.7310000061988831,
+  "change": -0.0702,
+  "change_pct": -9.6033,
+  "volume": 218481,
+  "market_cap": 9869428,
   "fifty_two_week_high": 4.34,
   "fifty_two_week_low": 0.591,
   "shares_outstanding": 14935576,
@@ -18,70 +18,70 @@
       "shares": 842669,
       "date_reported": "2026-06-30",
       "pct_held": 0.056399997,
-      "value": 615991
+      "value": 556835
     },
     {
       "organization": "CM Management, LLC",
       "shares": 500000,
       "date_reported": "2026-06-30",
       "pct_held": 0.0335,
-      "value": 365500
+      "value": 330399
     },
     {
       "organization": "Vanguard Capital Management LLC",
       "shares": 425118,
       "date_reported": "2026-06-30",
       "pct_held": 0.028499998,
-      "value": 310761
+      "value": 280917
     },
     {
       "organization": "Renaissance Technologies, LLC",
       "shares": 291039,
       "date_reported": "2026-06-30",
       "pct_held": 0.0195,
-      "value": 212749
+      "value": 192318
     },
     {
       "organization": "Bios Capital Management, LP",
       "shares": 249397,
       "date_reported": "2026-06-30",
       "pct_held": 0.0167,
-      "value": 182309
+      "value": 164801
     },
     {
       "organization": "Geode Capital Management, LLC",
       "shares": 102819,
       "date_reported": "2026-06-30",
       "pct_held": 0.0069,
-      "value": 75160
+      "value": 67942
     },
     {
       "organization": "Vanguard Fiduciary Trust Co",
       "shares": 49950,
       "date_reported": "2026-06-30",
       "pct_held": 0.0033000002,
-      "value": 36513
+      "value": 33006
     },
     {
       "organization": "Westside Investment Management, Inc.",
       "shares": 47850,
       "date_reported": "2026-06-30",
       "pct_held": 0.0032,
-      "value": 34978
+      "value": 31619
     },
     {
       "organization": "Citadel Advisors Llc",
       "shares": 47895,
       "date_reported": "2026-06-30",
       "pct_held": 0.0032,
-      "value": 35011
+      "value": 31649
     },
     {
       "organization": "Quadrature Capital Ltd",
       "shares": 39593,
       "date_reported": "2026-06-30",
       "pct_held": 0.0027,
-      "value": 28942
+      "value": 26163
     }
   ],
   "mutualfund_holders": [
@@ -90,63 +90,63 @@
       "shares": 338385,
       "date_reported": "2026-06-30",
       "pct_held": 0.0227,
-      "value": 247359
+      "value": 223604
     },
     {
       "organization": "VANGUARD INDEX FUNDS-Vanguard Extended Market Index Fund",
       "shares": 81101,
       "date_reported": "2026-06-30",
       "pct_held": 0.0054,
-      "value": 59284
+      "value": 53591
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Extended Market Index Fund",
       "shares": 49366,
       "date_reported": "2026-08-31",
       "pct_held": 0.0033000002,
-      "value": 36086
+      "value": 32621
     },
     {
       "organization": "Listed Funds Trust-Horizon Kinetics Medical ETF",
       "shares": 25164,
       "date_reported": "2026-06-30",
       "pct_held": 0.0017,
-      "value": 18394
+      "value": 16628
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Series Total Market Index Fund",
       "shares": 17477,
       "date_reported": "2026-08-31",
       "pct_held": 0.0011999999,
-      "value": 12775
+      "value": 11548
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Total Market Index Fund",
       "shares": 15273,
       "date_reported": "2026-08-31",
       "pct_held": 0.001,
-      "value": 11164
+      "value": 10092
     },
     {
       "organization": "VANGUARD VALLEY FORGE FUNDS-Vanguard Balanced Index Fund",
       "shares": 4832,
       "date_reported": "2026-06-30",
       "pct_held": 0.00029999999,
-      "value": 3532
+      "value": 3192
     },
     {
       "organization": "Dimensional ETF Trust-Dimensional US Sustainability Core 1 ETF",
       "shares": 1924,
       "date_reported": "2026-07-31",
       "pct_held": 0.0001,
-      "value": 1406
+      "value": 1271
     },
     {
       "organization": "Dimensional ETF Trust-Dimensional US Core Equity 2 ETF",
       "shares": 643,
       "date_reported": "2026-07-31",
       "pct_held": 0.0,
-      "value": 470
+      "value": 424
     }
   ],
   "insider_transactions": [
