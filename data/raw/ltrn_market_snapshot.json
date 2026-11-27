@@ -1,11 +1,11 @@
 {
   "ticker": "LTRN",
-  "fetched_at": "2026-11-26T03:49:16Z",
+  "fetched_at": "2026-11-27T03:50:44Z",
   "price": 0.303,
   "previous_close": 0.24500000476837158,
   "change": 0.058,
   "change_pct": 23.6735,
-  "volume": 567400,
+  "volume": 587800,
   "market_cap": 4813632,
   "fifty_two_week_high": 4.34,
   "fifty_two_week_low": 0.229,
@@ -108,10 +108,10 @@
     },
     {
       "organization": "Listed Funds Trust-Horizon Kinetics Medical ETF",
-      "shares": 25164,
-      "date_reported": "2026-06-30",
-      "pct_held": 0.0016,
-      "value": 7624
+      "shares": 22746,
+      "date_reported": "2026-09-30",
+      "pct_held": 0.0014,
+      "value": 6892
     },
     {
       "organization": "Fidelity Concord Street Trust-Fidelity Series Total Market Index Fund",
